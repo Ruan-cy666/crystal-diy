@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DIY设计 · 晶灵工坊</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Quicksand', 'Segoe UI', sans-serif;
+      background: #FAF8FC;
+      background-image: radial-gradient(ellipse at 20% 30%, rgba(184,169,201,0.06) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 70%, rgba(212,197,169,0.04) 0%, transparent 50%);
+      color: #4A4040;
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    header {
+      background: rgba(255,255,255,0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(184,169,201,0.08);
+      padding: 16px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 30px rgba(74,64,64,0.03);
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #6A5A6E;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo i {
+      font-size: 1.8rem;
+      color: #B8A9C9;
+      background: rgba(184,169,201,0.12);
+      padding: 10px;
+      border-radius: 50%;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #5A4E4E;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      position: relative;
+      transition: all 0.35s;
+      background: transparent;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #B8A9C9, #D4C5A9);
+      border-radius: 10px;
+      transition: all 0.4s;
+      transform: translateX(-50%);
+    }
+    .nav-links a:hover::after,
+    .nav-links a.active::after { width: 65%; }
+    .nav-links a:hover { color: #3A2A3E; transform: translateY(-2px); }
+    .nav-links a.active { color: #4A3A4A; background: rgba(184,169,201,0.06); }
+
+    main { flex: 1; padding: 50px 0 30px; }
+    .page-title {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #5A4A5A;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .page-title i { color: #B8A9C9; margin-right: 8px; }
+    .page-subtitle {
+      text-align: center;
+      color: #8A7A7A;
+      font-size: 1.05rem;
+      margin-bottom: 40px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #B8A9C9, #C9B5D8);
+      color: #fff;
+      border: none;
+      padding: 11px 30px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(184,169,201,0.2);
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(184,169,201,0.3);
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #B8A9C9;
+      color: #6A5A6E;
+      box-shadow: none;
+    }
+    .btn-outline:hover:not(:disabled) {
+      background: rgba(184,169,201,0.08);
+      box-shadow: 0 4px 16px rgba(184,169,201,0.08);
+    }
+    .btn-sm { padding: 7px 18px; font-size: 0.85rem; }
+    .btn-block { display: block; width: 100%; margin: 6px 0; }
+    .btn-gold {
+      background: linear-gradient(135deg, #D4A84A, #E8C86A);
+      box-shadow: 0 4px 16px rgba(212,168,74,0.3);
+    }
+    .btn-gold:hover { box-shadow: 0 8px 28px rgba(212,168,74,0.4); }
+    .btn-silver {
+      background: linear-gradient(135deg, #A8B0B8, #C8D0D8);
+      box-shadow: 0 4px 16px rgba(168,176,184,0.3);
+    }
+    .btn-silver:hover { box-shadow: 0 8px 28px rgba(168,176,184,0.4); }
+    .btn-chain-mode {
+      background: linear-gradient(135deg, #D4A84A, #C8D0D8);
+      box-shadow: 0 4px 16px rgba(180,170,150,0.3);
+    }
+    .btn-chain-mode.active {
+      background: linear-gradient(135deg, #E8C86A, #D8E0E8);
+      box-shadow: 0 0 30px rgba(212,168,74,0.4);
+      transform: scale(1.02);
+    }
+
+    footer {
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid rgba(184,169,201,0.06);
+      text-align: center;
+      padding: 28px 0;
+      color: #7A6E6E;
+      font-size: 0.95rem;
+      margin-top: 40px;
+    }
+    footer i { color: #C9A9A9; margin: 0 4px; }
+
+    /* ===== 设计器布局 ===== */
+    .designer-layout {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-top: 30px;
+    }
+
+    .bead-panel {
+      flex: 1 1 260px;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 24px;
+      padding: 20px;
+      border: 1px solid rgba(184,169,201,0.06);
+      box-shadow: 0 4px 20px rgba(74,64,64,0.03);
+      max-height: 680px;
+      overflow-y: auto;
+      transition: 0.3s;
+    }
+    .bead-panel:hover { box-shadow: 0 8px 30px rgba(74,64,64,0.05); }
+    .bead-panel::-webkit-scrollbar { width: 4px; }
+    .bead-panel::-webkit-scrollbar-thumb { background: #B8A9C9; border-radius: 10px; }
+
+    .panel-title { color: #5A4A5A; font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+    .panel-sub { font-size: 0.75rem; color: #9A8A8A; margin-bottom: 10px; }
+
+    .tab-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+      background: rgba(184,169,201,0.06);
+      border-radius: 16px;
+      padding: 4px;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 12px;
+      background: transparent;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #7A6A6A;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .tab-btn:hover { background: rgba(255,255,255,0.3); }
+    .tab-btn.active {
+      background: #fff;
+      color: #5A4A5A;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .crystal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin: 8px 0 10px;
+    }
+    .crystal-btn {
+      padding: 8px 4px;
+      border-radius: 14px;
+      border: 2px solid rgba(184,169,201,0.08);
+      background: rgba(255,255,255,0.4);
+      cursor: pointer;
+      transition: all 0.25s;
+      text-align: center;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: #5A4E4E;
+      line-height: 1.3;
+    }
+    .crystal-btn:hover {
+      border-color: #B8A9C9;
+      background: rgba(184,169,201,0.06);
+      transform: scale(1.03);
+    }
+    .crystal-btn .icon { font-size: 1.4rem; display: block; margin-bottom: 1px; }
+    .crystal-btn .sub { font-size: 0.55rem; color: #9A8A8A; font-weight: 400; }
+
+    .accessory-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin: 8px 0 10px;
+    }
+    .accessory-btn {
+      padding: 8px 4px;
+      border-radius: 14px;
+      border: 2px solid rgba(184,169,201,0.08);
+      background: rgba(255,255,255,0.4);
+      cursor: pointer;
+      transition: all 0.25s;
+      text-align: center;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: #5A4E4E;
+      line-height: 1.3;
+    }
+    .accessory-btn:hover {
+      border-color: #B8A9C9;
+      background: rgba(184,169,201,0.06);
+      transform: scale(1.03);
+    }
+    .accessory-btn .icon { font-size: 1.4rem; display: block; margin-bottom: 1px; }
+    .accessory-btn .sub { font-size: 0.55rem; color: #9A8A8A; font-weight: 400; }
+    .accessory-btn .metal-gold { color: #D4A84A; }
+    .accessory-btn .metal-silver { color: #A8B0B8; }
+
+    .option-group { margin: 8px 0; }
+    .option-group label { color: #6A5A6E; font-weight: 600; font-size: 0.82rem; display: block; margin-bottom: 3px; }
+    .option-btns { display: flex; gap: 5px; flex-wrap: wrap; }
+    .option-btn {
+      padding: 4px 12px;
+      border-radius: 18px;
+      border: 1.5px solid rgba(184,169,201,0.12);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.25s;
+      font-weight: 500;
+      color: #5A4E4E;
+      font-size: 0.75rem;
+    }
+    .option-btn:hover { border-color: #B8A9C9; background: rgba(184,169,201,0.04); }
+    .option-btn.active {
+      background: #B8A9C9;
+      color: #fff;
+      border-color: #B8A9C9;
+      box-shadow: 0 4px 12px rgba(184,169,201,0.15);
+    }
+
+    .preview-beads {
+      margin-top: 10px;
+      padding: 8px 10px;
+      background: rgba(245,240,248,0.3);
+      border-radius: 14px;
+      min-height: 38px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+      align-items: center;
+      border: 1px solid rgba(184,169,201,0.04);
+    }
+    .preview-beads .mini-bead {
+      width: 24px;
+      height: 24px;
+      border: 1px solid rgba(0,0,0,0.03);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+    .preview-beads .mini-accessory {
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    .canvas-wrapper {
+      flex: 3 1 460px;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 24px;
+      padding: 20px;
+      border: 1px solid rgba(184,169,201,0.06);
+      box-shadow: 0 4px 20px rgba(74,64,64,0.03);
+      text-align: center;
+      transition: 0.3s;
+      position: relative;
+    }
+    .canvas-wrapper:hover { box-shadow: 0 8px 30px rgba(74,64,64,0.05); }
+    #designerCanvas {
+      width: 100%;
+      height: auto;
+      max-width: 500px;
+      background: rgba(250,248,252,0.5);
+      border-radius: 20px;
+      border: 1px solid rgba(184,169,201,0.04);
+      cursor: default;
+    }
+    .canvas-hint { margin-top: 8px; color: #9A8A8A; font-size: 0.78rem; }
+    .canvas-hint i { margin: 0 4px; color: #C9B5D8; }
+    .canvas-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .action-panel {
+      flex: 1 1 200px;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 24px;
+      padding: 20px;
+      border: 1px solid rgba(184,169,201,0.06);
+      box-shadow: 0 4px 20px rgba(74,64,64,0.03);
+      transition: 0.3s;
+    }
+    .action-panel:hover { box-shadow: 0 8px 30px rgba(74,64,64,0.05); }
+    .action-panel .count { font-weight: 700; color: #B8A9C9; font-size: 1.2rem; }
+
+    .bead-list {
+      max-height: 220px;
+      overflow-y: auto;
+      font-size: 0.78rem;
+      color: #5A4E4E;
+      margin: 8px 0;
+    }
+    .bead-list::-webkit-scrollbar { width: 3px; }
+    .bead-list::-webkit-scrollbar-thumb { background: #D4C5A9; border-radius: 10px; }
+    .bead-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 0;
+      border-bottom: 1px solid rgba(184,169,201,0.04);
+    }
+    .bead-item .bead-info { display: flex; align-items: center; gap: 6px; flex: 1; font-size: 0.75rem; }
+    .bead-item .bead-actions { display: flex; gap: 2px; }
+    .bead-item .move-btn {
+      background: none;
+      border: none;
+      color: #B8A9C9;
+      cursor: pointer;
+      font-size: 0.7rem;
+      padding: 0 3px;
+      transition: 0.2s;
+    }
+    .bead-item .move-btn:hover { color: #6A5A6E; }
+    .bead-item .move-btn:disabled { opacity: 0.2; cursor: not-allowed; }
+    .bead-item .del-btn {
+      background: none;
+      border: none;
+      color: #C9A9A9;
+      cursor: pointer;
+      font-size: 0.7rem;
+      transition: 0.2s;
+      padding: 0 4px;
+    }
+    .bead-item .del-btn:hover { color: #B08080; }
+    .bead-item.chain-start { background: rgba(212,168,74,0.08); border-radius: 4px; }
+    .bead-item.chain-end { background: rgba(168,176,184,0.08); border-radius: 4px; }
+
+    .template-panel {
+      flex: 1 1 100%;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 24px;
+      padding: 18px 22px;
+      border: 1px solid rgba(184,169,201,0.06);
+      box-shadow: 0 4px 20px rgba(74,64,64,0.03);
+      transition: 0.3s;
+    }
+    .template-panel:hover { box-shadow: 0 8px 30px rgba(74,64,64,0.05); }
+    .template-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .template-card {
+      padding: 12px 10px;
+      border-radius: 16px;
+      border: 2px solid rgba(184,169,201,0.06);
+      background: rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+    }
+    .template-card:hover {
+      border-color: #B8A9C9;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(74,64,64,0.04);
+    }
+    .template-card .preview {
+      display: flex;
+      justify-content: center;
+      gap: 2px;
+      margin-bottom: 4px;
+      font-size: 1.1rem;
+      flex-wrap: wrap;
+    }
+    .template-card .tname { font-weight: 600; color: #5A4A5A; font-size: 0.8rem; }
+    .template-card .tdesc { font-size: 0.6rem; color: #8A7A7A; }
+    .template-card .tcount { font-size: 0.6rem; color: #B8A9C9; }
+
+    .size-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 6px;
+      font-size: 0.65rem;
+      color: #9A8A8A;
+    }
+    .size-indicator span { display: inline-flex; align-items: center; gap: 4px; }
+    .size-indicator .dot {
+      display: inline-block;
+      border-radius: 50%;
+      background: #B8A9C9;
+      opacity: 0.4;
+    }
+
+    /* 链条模式状态指示器 */
+    .chain-status {
+      padding: 8px 12px;
+      border-radius: 12px;
+      margin-top: 8px;
+      font-size: 0.78rem;
+      text-align: center;
+      background: rgba(184,169,201,0.04);
+      border: 1px solid rgba(184,169,201,0.06);
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .chain-status .dot-gold {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #D4A84A;
+      box-shadow: 0 0 12px rgba(212,168,74,0.4);
+    }
+    .chain-status .dot-silver {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #A8B0B8;
+      box-shadow: 0 0 12px rgba(168,176,184,0.4);
+    }
+
+    @media (max-width: 768px) {
+      nav { flex-direction: column; gap: 10px; }
+      .nav-links { justify-content: center; gap: 4px; }
+      .nav-links a { padding: 8px 14px; font-size: 0.82rem; }
+      .page-title { font-size: 1.8rem; }
+      .crystal-grid { grid-template-columns: repeat(3, 1fr); }
+      .accessory-grid { grid-template-columns: repeat(3, 1fr); }
+      .template-grid { grid-template-columns: repeat(2, 1fr); }
+      .bead-panel { max-height: 400px; }
+    }
+    @media (max-width: 480px) {
+      .crystal-grid { grid-template-columns: repeat(2, 1fr); }
+      .accessory-grid { grid-template-columns: repeat(2, 1fr); }
+      .template-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <nav class="container">
+    <div class="logo"><i class="fas fa-gem"></i>晶灵工坊</div>
+    <ul class="nav-links">
+      <li><a href="index.html">首页</a></li>
+      <li><a href="gallery.html">作品集</a></li>
+      <li><a href="designer.html" class="active">DIY设计</a></li>
+      <li><a href="guide.html">灵感指南</a></li>
+      <li><a href="my-designs.html">我的设计</a></li>
+      <li><a href="about.html">关于</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <div class="container">
+    <h1 class="page-title"><i class="fas fa-paint-brush" style="color:#B8A9C9;"></i> 手串DIY设计器</h1>
+    <p class="page-subtitle">选择水晶/配饰 · 自由搭配 · 链条连接</p>
+
+    <div class="designer-layout">
+      <!-- 左侧面板 -->
+      <div class="bead-panel">
+        <div class="tab-bar">
+          <button class="tab-btn active" data-tab="crystals" onclick="switchTab('crystals')">💎 水晶</button>
+          <button class="tab-btn" data-tab="accessories" onclick="switchTab('accessories')">✨ 配饰</button>
+        </div>
+
+        <div id="tab-crystals" class="tab-content active">
+          <div class="panel-sub">点击添加到手串</div>
+          <div class="crystal-grid" id="crystalGrid"></div>
+        </div>
+
+        <div id="tab-accessories" class="tab-content">
+          <div class="panel-sub">点击添加到手串</div>
+          <div class="accessory-grid" id="accessoryGrid"></div>
+        </div>
+
+        <div class="option-group">
+          <label>🎯 珠子形状</label>
+          <div class="option-btns" id="shapeSelector">
+            <button class="option-btn active" data-shape="circle">⚪ 圆形</button>
+            <button class="option-btn" data-shape="square">⬜ 方形</button>
+            <button class="option-btn" data-shape="triangle">🔺 三角</button>
+            <button class="option-btn" data-shape="diamond">💎 水滴</button>
+          </div>
+        </div>
+
+        <div class="option-group">
+          <label>📏 珠子大小</label>
+          <div class="option-btns" id="sizeSelector">
+            <button class="option-btn" data-size="14">小</button>
+            <button class="option-btn active" data-size="22">中</button>
+            <button class="option-btn" data-size="30">大</button>
+            <button class="option-btn" data-size="38">超大</button>
+          </div>
+        </div>
+
+        <div class="size-indicator">
+          <span><span class="dot" style="width:14px;height:14px;"></span> 小</span>
+          <span><span class="dot" style="width:22px;height:22px;"></span> 中</span>
+          <span><span class="dot" style="width:30px;height:30px;"></span> 大</span>
+          <span><span class="dot" style="width:38px;height:38px;"></span> 超大</span>
+        </div>
+
+        <button class="btn btn-block btn-outline" onclick="clearDesign()" style="margin-top:10px;">
+          <i class="fas fa-trash"></i> 清空手串
+        </button>
+
+        <!-- 链条模式 -->
+        <button class="btn btn-block btn-chain-mode" id="chainModeBtn" onclick="toggleChainMode()" style="margin-top:6px;">
+          <i class="fas fa-link"></i> 链条模式
+        </button>
+
+        <div class="chain-status" id="chainStatus">
+          <span style="color:#9A8A8A;">💡 点击"链条模式"，再点击两颗珠子设起点和终点</span>
+        </div>
+
+        <div class="preview-beads" id="previewBeads">
+          <span style="color:#9A8A8A; font-size:0.75rem;">暂无珠子</span>
+        </div>
+      </div>
+
+      <!-- 画布 -->
+      <div class="canvas-wrapper">
+        <canvas id="designerCanvas" width="520" height="520"></canvas>
+        <div class="canvas-hint">
+          <i class="fas fa-arrows-alt"></i> 拖拽调整顺序
+          <i class="fas fa-mouse" style="margin-left:10px;"></i> 双击删除
+          <i class="fas fa-link" style="margin-left:10px;color:#D4A84A;"></i> 链条模式设起点/终点
+        </div>
+        <div class="canvas-actions">
+          <button class="btn btn-sm" id="randomBtn" onclick="randomDesign()"><i class="fas fa-dice"></i> 随机生成</button>
+          <button class="btn btn-sm btn-outline" onclick="saveDesign()"><i class="fas fa-save"></i> 保存</button>
+          <button class="btn btn-sm btn-outline" onclick="exportDesign()"><i class="fas fa-download"></i> 导出</button>
+        </div>
+      </div>
+
+      <!-- 右侧面板 -->
+      <div class="action-panel">
+        <div class="panel-title"><i class="fas fa-list" style="color:#B8A9C9;"></i> 当前手串</div>
+        <div class="bead-list" id="beadList">
+          <span style="color:#9A8A8A; font-size:0.8rem;">点击添加</span>
+        </div>
+        <hr style="border-color:rgba(184,169,201,0.06); margin:8px 0;">
+        <p style="font-size:0.85rem; color:#6A5A6E;">
+          <i class="fas fa-circle" style="color:#B8A9C9;"></i> 共 <span class="count" id="beadCount">0</span> 件
+        </p>
+        <button class="btn btn-block" onclick="autoArrange()" style="margin-top:10px;">
+          <i class="fas fa-magic"></i> 重新排列
+        </button>
+        <button class="btn btn-block btn-outline" onclick="clearChain()" style="margin-top:6px;font-size:0.8rem;">
+          <i class="fas fa-times"></i> 清除链条
+        </button>
+      </div>
+
+      <!-- 模板 -->
+      <div class="template-panel">
+        <div class="panel-title"><i class="fas fa-copy" style="color:#D4C5A9;"></i> 🎨 灵感模板</div>
+        <div class="panel-sub">点击一键生成，可在此基础上调整</div>
+        <div class="template-grid" id="templateGrid"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p><i class="fas fa-gem"></i> 晶灵工坊 · 用设计连接自然能量 <i class="fas fa-sparkles"></i></p>
+  </div>
+</footer>
+
+<script>
+// ============================================================
+//  数据定义
+// ============================================================
+
+const CRYSTALS = [
+  { id: 'amethyst', name: '紫水晶', color: '#9B6BB5', emoji: '💜', group: 'purple' },
+  { id: 'charoite', name: '紫龙晶', color: '#8B5BA5', emoji: '🔮', group: 'purple' },
+  { id: 'sugilite', name: '舒俱来', color: '#B05A9B', emoji: '💎', group: 'purple' },
+  { id: 'rose', name: '粉晶', color: '#F4A0B0', emoji: '💗', group: 'pink' },
+  { id: 'rhodochrosite', name: '红纹石', color: '#E8707A', emoji: '❤️', group: 'pink' },
+  { id: 'morganite', name: '摩根石', color: '#F0B8C8', emoji: '🌸', group: 'pink' },
+  { id: 'aquamarine', name: '海蓝宝', color: '#6EC8D9', emoji: '💙', group: 'blue' },
+  { id: 'lapis', name: '青金石', color: '#4A6A9B', emoji: '🌌', group: 'blue' },
+  { id: 'sodalite', name: '苏打石', color: '#5A7AAA', emoji: '🔷', group: 'blue' },
+  { id: 'azurite', name: '蓝铜矿', color: '#3A6A9A', emoji: '💠', group: 'blue' },
+  { id: 'citrine', name: '黄水晶', color: '#F5C84A', emoji: '💛', group: 'yellow' },
+  { id: 'golden', name: '金发晶', color: '#E8B830', emoji: '⭐', group: 'yellow' },
+  { id: 'tiger', name: '虎眼石', color: '#C8A040', emoji: '🐯', group: 'yellow' },
+  { id: 'green', name: '绿幽灵', color: '#5AB88A', emoji: '💚', group: 'green' },
+  { id: 'peridot', name: '橄榄石', color: '#8AC84A', emoji: '🍀', group: 'green' },
+  { id: 'aventurine', name: '东陵玉', color: '#6AB87A', emoji: '🌿', group: 'green' },
+  { id: 'moldavite', name: '陨石', color: '#3A8A5A', emoji: '☄️', group: 'green' },
+  { id: 'serpentine', name: '蛇纹石', color: '#7AAA6A', emoji: '🐍', group: 'green' },
+  { id: 'carnelian', name: '红玉髓', color: '#E8896A', emoji: '🧡', group: 'red' },
+  { id: 'garnet', name: '石榴石', color: '#C0404A', emoji: '❤️‍🔥', group: 'red' },
+  { id: 'sunstone', name: '太阳石', color: '#F0A050', emoji: '☀️', group: 'red' },
+  { id: 'moonstone', name: '月光石', color: '#C9B1FF', emoji: '🤍', group: 'white' },
+  { id: 'opal', name: '蛋白石', color: '#E8D8F0', emoji: '🌈', group: 'white' },
+  { id: 'howlite', name: '白纹石', color: '#E8E0E8', emoji: '⬜', group: 'white' },
+  { id: 'obsidian', name: '黑曜石', color: '#4A4A5A', emoji: '🖤', group: 'black' },
+  { id: 'hematite', name: '赤铁矿', color: '#5A4A4A', emoji: '⚫', group: 'black' },
+  { id: 'jet', name: '煤玉', color: '#3A3A3A', emoji: '⬛', group: 'black' },
+  { id: 'tourmaline', name: '碧玺', color: '#E8A0B0', emoji: '🌈', group: 'special' },
+  { id: 'fluorite', name: '萤石', color: '#80C8D8', emoji: '💠', group: 'special' },
+  { id: 'chalcedony', name: '玉髓', color: '#B8C8D8', emoji: '🌀', group: 'special' },
+  { id: 'jasper', name: '碧玉', color: '#B0885A', emoji: '🗿', group: 'special' },
+];
+
+const ACCESSORIES = [
+  { id: 'gold_spacer', name: '金隔片', emoji: '⭕', metal: 'gold', type: 'spacer' },
+  { id: 'silver_spacer', name: '银隔片', emoji: '○', metal: 'silver', type: 'spacer' },
+  { id: 'gold_cap', name: '金花托', emoji: '🌼', metal: 'gold', type: 'cap' },
+  { id: 'silver_cap', name: '银花托', emoji: '🌸', metal: 'silver', type: 'cap' },
+  { id: 'gold_star', name: '金星星', emoji: '⭐', metal: 'gold', type: 'charm' },
+  { id: 'silver_star', name: '银星星', emoji: '🌟', metal: 'silver', type: 'charm' },
+  { id: 'gold_heart', name: '金爱心', emoji: '💛', metal: 'gold', type: 'charm' },
+  { id: 'silver_heart', name: '银爱心', emoji: '🤍', metal: 'silver', type: 'charm' },
+  { id: 'gold_diamond', name: '金钻石', emoji: '💎', metal: 'gold', type: 'charm' },
+  { id: 'silver_diamond', name: '银钻石', emoji: '🔹', metal: 'silver', type: 'charm' },
+  { id: 'gold_moon', name: '金月亮', emoji: '🌙', metal: 'gold', type: 'charm' },
+  { id: 'silver_moon', name: '银月亮', emoji: '🌙', metal: 'silver', type: 'charm' },
+  { id: 'gold_cross', name: '金十字', emoji: '✝️', metal: 'gold', type: 'charm' },
+  { id: 'silver_cross', name: '银十字', emoji: '✝️', metal: 'silver', type: 'charm' },
+  { id: 'gold_chain', name: '金链条', emoji: '⛓️', metal: 'gold', type: 'chain' },
+  { id: 'silver_chain', name: '银链条', emoji: '⛓️', metal: 'silver', type: 'chain' },
+  { id: 'pearl', name: '珍珠', emoji: '⚪', metal: null, type: 'bead' },
+  { id: 'crystal_cluster', name: '晶簇', emoji: '💎', metal: null, type: 'charm' },
+  { id: 'feather', name: '羽毛', emoji: '🪶', metal: null, type: 'charm' },
+  { id: 'leaf', name: '叶片', emoji: '🍃', metal: null, type: 'charm' },
+];
+
+const TEMPLATES = [
+  { id: 'romantic', name: '💕 浪漫粉晶', desc: '爱情·温柔', beads: ['rose','rose','moonstone','rose','rose','rose','rose','moonstone','rose','rose','rose','rose','rose','moonstone','rose'] },
+  { id: 'wealth', name: '💰 财富之轮', desc: '黄晶·招财', beads: ['citrine','citrine','green','citrine','citrine','citrine','citrine','green','citrine','citrine','citrine','citrine','golden','citrine','citrine'] },
+  { id: 'calm', name: '🌙 月光静心', desc: '紫晶·月光石', beads: ['amethyst','moonstone','amethyst','moonstone','amethyst','moonstone','amethyst','moonstone','amethyst','moonstone','amethyst','moonstone','amethyst','moonstone','amethyst'] },
+  { id: 'ocean', name: '🌊 海洋能量', desc: '海蓝宝·青金', beads: ['aquamarine','lapis','aquamarine','lapis','aquamarine','lapis','aquamarine','lapis','aquamarine','lapis','aquamarine','lapis','aquamarine','lapis','aquamarine'] },
+  { id: 'rainbow', name: '🌈 彩虹能量', desc: '七色·平衡', beads: ['amethyst','rose','aquamarine','citrine','green','moonstone','carnelian','amethyst','rose','aquamarine','citrine','green','moonstone','carnelian','amethyst'] },
+  { id: 'protection', name: '🛡️ 守护之力', desc: '黑曜石·红玉髓', beads: ['obsidian','carnelian','obsidian','carnelian','obsidian','carnelian','obsidian','carnelian','obsidian','carnelian','obsidian','carnelian','obsidian','carnelian','obsidian'] },
+  { id: 'nature', name: '🌿 自然之灵', desc: '绿幽灵·橄榄石', beads: ['green','peridot','green','peridot','green','peridot','green','peridot','green','peridot','green','peridot','green','peridot','green'] },
+  { id: 'royal', name: '👑 皇室优雅', desc: '紫晶·青金石', beads: ['amethyst','lapis','amethyst','lapis','amethyst','lapis','amethyst','lapis','amethyst','lapis','amethyst','lapis','amethyst','lapis','amethyst'] },
+  { id: 'golden_glow', name: '✨ 金色光芒', desc: '金发晶·黄晶', beads: ['golden','citrine','golden','citrine','golden','citrine','golden','citrine','golden','citrine','golden','citrine','golden','citrine','golden'] },
+  { id: 'mystic', name: '🔮 神秘紫韵', desc: '紫龙晶·舒俱来', beads: ['charoite','sugilite','charoite','sugilite','charoite','sugilite','charoite','sugilite','charoite','sugilite','charoite','sugilite','charoite','sugilite','charoite'] },
+];
+
+// ============================================================
+//  状态
+// ============================================================
+let beads = [];
+let selectedShape = 'circle';
+let selectedSize = 22;
+let draggingIndex = -1;
+let isDragging = false;
+let currentTab = 'crystals';
+
+// 链条状态
+let chainMode = false;
+let chainStart = -1;  // 起点珠子索引
+let chainEnd = -1;    // 终点珠子索引
+
+const canvas = document.getElementById('designerCanvas');
+const ctx = canvas.getContext('2d');
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+let ringRadius = 155;
+
+// ============================================================
+//  工具函数
+// ============================================================
+function lighten(hex, amt) {
+  let c = hexToRgb(hex);
+  return 'rgb(' + Math.min(255,c.r+amt) + ',' + Math.min(255,c.g+amt) + ',' + Math.min(255,c.b+amt) + ')';
+}
+function darken(hex, amt) {
+  let c = hexToRgb(hex);
+  return 'rgb(' + Math.max(0,c.r-amt) + ',' + Math.max(0,c.g-amt) + ',' + Math.max(0,c.b-amt) + ')';
+}
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? { r: parseInt(result[1],16), g: parseInt(result[2],16), b: parseInt(result[3],16) } : {r:128,g:128,b:128};
+}
+function getMetalColor(metal) {
+  if (metal === 'gold') return '#D4A84A';
+  if (metal === 'silver') return '#C0C8D0';
+  return '#B8A9C9';
+}
+function getCrystalById(id) {
+  return CRYSTALS.find(c => c.id === id) || ACCESSORIES.find(a => a.id === id);
+}
+
+// ============================================================
+//  绘制链条
+// ============================================================
+function drawChain(ctx, x1, y1, x2, y2, metal) {
+  const color = metal === 'gold' ? '#D4A84A' : '#C0C8D0';
+  const darkColor = metal === 'gold' ? '#B89030' : '#A0A8B0';
+  
+  ctx.save();
+  
+  // 计算距离和角度
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const dist = Math.sqrt(dx*dx + dy*dy);
+  const angle = Math.atan2(dy, dx);
+  const segments = Math.max(6, Math.floor(dist / 18));
+  
+  ctx.shadowColor = 'rgba(0,0,0,0.05)';
+  ctx.shadowBlur = 4;
+  
+  for (let i = 0; i <= segments; i++) {
+    const t = i / segments;
+    // 略微弧线
+    const arcOffset = Math.sin(t * Math.PI) * 8;
+    const cx = x1 + dx * t + Math.cos(angle + Math.PI/2) * arcOffset;
+    const cy = y1 + dy * t + Math.sin(angle + Math.PI/2) * arcOffset;
+    
+    const size = (i === 0 || i === segments) ? 3 : 4;
+    const isEven = i % 2 === 0;
+    
+    ctx.beginPath();
+    ctx.arc(cx, cy, size, 0, Math.PI * 2);
+    ctx.fillStyle = isEven ? color : darkColor;
+    ctx.fill();
+    
+    // 连接线
+    if (i > 0) {
+      const prevT = (i-1) / segments;
+      const prevArcOffset = Math.sin(prevT * Math.PI) * 8;
+      const px = x1 + dx * prevT + Math.cos(angle + Math.PI/2) * prevArcOffset;
+      const py = y1 + dy * prevT + Math.sin(angle + Math.PI/2) * prevArcOffset;
+      
+      ctx.beginPath();
+      ctx.moveTo(px, py);
+      ctx.lineTo(cx, cy);
+      ctx.strokeStyle = isEven ? color : darkColor;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+  }
+  
+  ctx.restore();
+}
+
+// ============================================================
+//  绘图 - 支持水晶+配饰+链条
+// ============================================================
+function drawBead(ctx, x, y, item, shape, size, index, total, highlight) {
+  const s = size || 22;
+  ctx.save();
+
+  const isCrystal = CRYSTALS.some(c => c.id === item.id);
+  const isAccessory = ACCESSORIES.some(a => a.id === item.id);
+  const color = item.color || getMetalColor(item.metal) || '#B8A9C9';
+
+  // 高亮光环（链条模式）
+  if (highlight === 'start') {
+    ctx.shadowColor = '#D4A84A';
+    ctx.shadowBlur = 30;
+    ctx.beginPath();
+    ctx.arc(x, y, s/2 + 8, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(212,168,74,0.5)';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  } else if (highlight === 'end') {
+    ctx.shadowColor = '#A8B0B8';
+    ctx.shadowBlur = 30;
+    ctx.beginPath();
+    ctx.arc(x, y, s/2 + 8, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(168,176,184,0.5)';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+
+  // 光晕
+  const glow = ctx.createRadialGradient(x, y, 0, x, y, s * 2);
+  glow.addColorStop(0, color + '40');
+  glow.addColorStop(1, color + '00');
+  ctx.fillStyle = glow;
+  ctx.beginPath();
+  ctx.arc(x, y, s * 2, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.shadowColor = 'rgba(0,0,0,0.10)';
+  ctx.shadowBlur = 10;
+  ctx.shadowOffsetY = 2;
+
+  if (isAccessory) {
+    const metal = item.metal;
+    const baseColor = getMetalColor(metal);
+    const grad = ctx.createRadialGradient(x - s*0.2, y - s*0.2, 2, x, y, s);
+    grad.addColorStop(0, lighten(baseColor, 60));
+    grad.addColorStop(0.5, baseColor);
+    grad.addColorStop(1, darken(baseColor, 40));
+    ctx.fillStyle = grad;
+
+    const type = item.type || 'charm';
+    if (type === 'spacer') {
+      ctx.beginPath();
+      ctx.ellipse(x, y, s/2, s/3, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = darken(baseColor, 30);
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    } else if (type === 'cap') {
+      for (let i = 0; i < 8; i++) {
+        const angle = (i / 8) * Math.PI * 2;
+        const r = i % 2 === 0 ? s/2 : s/3;
+        ctx.beginPath();
+        ctx.arc(x + r * Math.cos(angle), y + r * Math.sin(angle), s/6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.beginPath();
+      ctx.arc(x, y, s/4, 0, Math.PI * 2);
+      ctx.fillStyle = lighten(baseColor, 40);
+      ctx.fill();
+    } else if (type === 'chain') {
+      ctx.shadowBlur = 0;
+      for (let i = -3; i <= 3; i++) {
+        const cx = x + i * s * 0.3;
+        const cy = y + (i % 2 === 0 ? -s*0.15 : s*0.15);
+        ctx.beginPath();
+        ctx.arc(cx, cy, s/5, 0, Math.PI * 2);
+        ctx.strokeStyle = baseColor;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+      ctx.shadowBlur = 10;
+    } else {
+      ctx.shadowBlur = 0;
+      ctx.font = s * 0.7 + 'px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(item.emoji || '✨', x, y + 1);
+    }
+  } else {
+    const grad = ctx.createRadialGradient(x - s*0.25, y - s*0.25, 2, x, y, s);
+    grad.addColorStop(0, lighten(color, 60));
+    grad.addColorStop(0.4, color);
+    grad.addColorStop(1, darken(color, 40));
+    ctx.fillStyle = grad;
+
+    switch(shape) {
+      case 'circle':
+        ctx.beginPath();
+        ctx.arc(x, y, s/2, 0, Math.PI * 2);
+        ctx.fill();
+        break;
+      case 'square':
+        ctx.beginPath();
+        roundRect(ctx, x - s/2, y - s/2, s, s, 5);
+        ctx.fill();
+        break;
+      case 'triangle':
+        ctx.beginPath();
+        ctx.moveTo(x, y - s/2);
+        ctx.lineTo(x - s/2, y + s/2);
+        ctx.lineTo(x + s/2, y + s/2);
+        ctx.closePath();
+        ctx.fill();
+        break;
+      case 'diamond':
+        ctx.beginPath();
+        ctx.moveTo(x, y - s/2);
+        ctx.lineTo(x + s/2, y);
+        ctx.lineTo(x, y + s/2);
+        ctx.lineTo(x - s/2, y);
+        ctx.closePath();
+        ctx.fill();
+        break;
+    }
+
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = 'rgba(255,255,255,0.45)';
+    switch(shape) {
+      case 'circle':
+        ctx.beginPath();
+        ctx.arc(x - s*0.2, y - s*0.25, s*0.2, 0, Math.PI * 2);
+        ctx.fill();
+        break;
+      case 'square':
+        roundRect(ctx, x - s*0.3, y - s*0.38, s*0.25, s*0.12, 2);
+        ctx.fill();
+        break;
+      case 'triangle':
+        ctx.beginPath();
+        ctx.moveTo(x - s*0.1, y - s*0.32);
+        ctx.lineTo(x - s*0.28, y - s*0.12);
+        ctx.lineTo(x + s*0.08, y - s*0.12);
+        ctx.closePath();
+        ctx.fill();
+        break;
+      case 'diamond':
+        ctx.beginPath();
+        ctx.moveTo(x, y - s*0.38);
+        ctx.lineTo(x + s*0.18, y - s*0.1);
+        ctx.lineTo(x - s*0.18, y - s*0.1);
+        ctx.closePath();
+        ctx.fill();
+        break;
+    }
+
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.beginPath();
+    ctx.arc(x + s*0.18, y - s*0.32, s*0.06, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = 'rgba(255,255,255,0.06)';
+    ctx.beginPath();
+    ctx.arc(x + s*0.1, y + s*0.2, s*0.12, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  ctx.restore();
+
+  if (total > 1) {
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.font = 'bold 10px Quicksand, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(index + 1, x, y + 2);
+  }
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  if (r > w/2) r = w/2;
+  if (r > h/2) r = h/2;
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+// ============================================================
+//  渲染
+// ============================================================
+function render() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const total = beads.length;
+  const avgSize = total > 0 ? beads.reduce((sum, b) => sum + (b.size || selectedSize), 0) / total : selectedSize;
+  const minRadius = Math.max(120, (avgSize * total) / Math.PI * 1.1);
+  ringRadius = Math.min(180, minRadius);
+
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, ringRadius + 20, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(184,169,201,0.04)';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([5, 7]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  if (total === 0) {
+    ctx.fillStyle = '#B8A9C9';
+    ctx.font = '18px Quicksand, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('✨ 点击左侧添加珠子', centerX, centerY - 10);
+    ctx.fillStyle = '#D4C5A9';
+    ctx.font = '14px Quicksand, sans-serif';
+    ctx.fillText('或选择一个灵感模板', centerX, centerY + 28);
+    return;
+  }
+
+  // 获取所有珠子位置
+  const positions = [];
+  beads.forEach(function(bead, index) {
+    const angle = (index / total) * 2 * Math.PI - Math.PI/2;
+    positions.push({
+      x: centerX + ringRadius * Math.cos(angle),
+      y: centerY + ringRadius * Math.sin(angle)
+    });
+  });
+
+  // ===== 绘制链条（如果有起点和终点） =====
+  if (chainStart >= 0 && chainEnd >= 0 && chainStart < total && chainEnd < total && chainStart !== chainEnd) {
+    const p1 = positions[chainStart];
+    const p2 = positions[chainEnd];
+    // 判断链条材质（优先用起点珠子的金属属性）
+    const startBead = beads[chainStart];
+    const startItem = getCrystalById(startBead.id);
+    const metal = (startItem && startItem.metal) || 'gold';
+    drawChain(ctx, p1.x, p1.y, p2.x, p2.y, metal);
+  }
+
+  // ===== 绘制所有珠子 =====
+  beads.forEach(function(bead, index) {
+    const pos = positions[index];
+    const item = getCrystalById(bead.id);
+    const color = item ? (item.color || getMetalColor(item.metal) || '#B8A9C9') : '#B8A9C9';
+    const size = bead.size || selectedSize;
+    
+    let highlight = null;
+    if (chainMode) {
+      if (index === chainStart) highlight = 'start';
+      else if (index === chainEnd) highlight = 'end';
+    }
+    
+    drawBead(ctx, pos.x, pos.y, 
+      { id: bead.id, color: color, metal: item ? item.metal : null, emoji: item ? item.emoji : null, type: item ? item.type : null }, 
+      bead.shape || 'circle', size, index, total, highlight);
+  });
+
+  // 中心装饰
+  ctx.fillStyle = 'rgba(184,169,201,0.05)';
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, 20, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = 'rgba(184,169,201,0.10)';
+  ctx.font = '16px Quicksand, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('✦', centerX, centerY + 1);
+}
+
+// ============================================================
+//  链条模式
+// ============================================================
+function toggleChainMode() {
+  chainMode = !chainMode;
+  const btn = document.getElementById('chainModeBtn');
+  const status = document.getElementById('chainStatus');
+  
+  if (chainMode) {
+    btn.classList.add('active');
+    btn.innerHTML = '<i class="fas fa-link"></i> 退出链条模式';
+    status.innerHTML = '<span class="dot-gold"></span> 点击一颗珠子设为 <b>起点（金色）</b>，再点击另一颗设为 <b>终点（银色）</b>';
+    // 重置链条
+    chainStart = -1;
+    chainEnd = -1;
+  } else {
+    btn.classList.remove('active');
+    btn.innerHTML = '<i class="fas fa-link"></i> 链条模式';
+    status.innerHTML = '<span style="color:#9A8A8A;">💡 点击"链条模式"，再点击两颗珠子设起点和终点</span>';
+    chainStart = -1;
+    chainEnd = -1;
+  }
+  render();
+  updateUI();
+}
+
+function clearChain() {
+  chainStart = -1;
+  chainEnd = -1;
+  render();
+  updateUI();
+  const status = document.getElementById('chainStatus');
+  if (chainMode) {
+    status.innerHTML = '<span class="dot-gold"></span> 点击一颗珠子设为 <b>起点（金色）</b>，再点击另一颗设为 <b>终点（银色）</b>';
+  }
+}
+
+// ============================================================
+//  核心操作
+// ============================================================
+function addBead(id) {
+  const item = getCrystalById(id);
+  if (!item) return;
+  beads.push({ id: id, shape: selectedShape, size: selectedSize });
+  render();
+  updateUI();
+  updateRandomBtn();
+}
+
+function removeBead(index) {
+  if (index >= 0 && index < beads.length) {
+    beads.splice(index, 1);
+    // 如果删除了链条相关的珠子，清除链条
+    if (chainStart === index || chainEnd === index || chainStart > index || chainEnd > index) {
+      if (chainStart > index) chainStart--;
+      if (chainEnd > index) chainEnd--;
+      if (chainStart === chainEnd) { chainStart = -1; chainEnd = -1; }
+    }
+    render();
+    updateUI();
+    updateRandomBtn();
+  }
+}
+
+function moveBead(index, direction) {
+  const newIndex = index + direction;
+  if (newIndex < 0 || newIndex >= beads.length) return;
+  const temp = beads[index];
+  beads[index] = beads[newIndex];
+  beads[newIndex] = temp;
+  // 更新链条索引
+  if (chainStart === index) chainStart = newIndex;
+  else if (chainStart === newIndex) chainStart = index;
+  if (chainEnd === index) chainEnd = newIndex;
+  else if (chainEnd === newIndex) chainEnd = index;
+  render();
+  updateUI();
+}
+
+function clearDesign() {
+  if (beads.length === 0) return;
+  if (confirm('确定要清空所有珠子吗？')) {
+    beads = [];
+    chainStart = -1;
+    chainEnd = -1;
+    render();
+    updateUI();
+    updateRandomBtn();
+  }
+}
+
+function autoArrange() { render(); }
+
+function applyTemplate(templateId) {
+  const template = TEMPLATES.find(t => t.id === templateId);
+  if (!template) return;
+  if (beads.length > 0 && !confirm('将替换当前设计，确定吗？')) return;
+
+  const sizeMap = { 14: 18, 22: 15, 30: 12, 38: 9 };
+  const targetCount = sizeMap[selectedSize] || 15;
+
+  const templateBeads = template.beads || [];
+  const newBeads = [];
+  for (let i = 0; i < targetCount; i++) {
+    const idx = i % templateBeads.length;
+    newBeads.push({ id: templateBeads[idx], shape: selectedShape, size: selectedSize });
+  }
+  beads = newBeads;
+  chainStart = -1;
+  chainEnd = -1;
+  render();
+  updateUI();
+  updateRandomBtn();
+}
+
+function randomDesign() {
+  if (beads.length > 0) {
+    if (!confirm('将替换当前设计，确定吗？')) return;
+  }
+  const allItems = [...CRYSTALS, ...ACCESSORIES];
+  const count = Math.floor(Math.random() * 6) + 10;
+  beads = [];
+  for (let i = 0; i < count; i++) {
+    const item = allItems[Math.floor(Math.random() * allItems.length)];
+    const shapes = ['circle', 'square', 'triangle', 'diamond'];
+    beads.push({
+      id: item.id,
+      shape: shapes[Math.floor(Math.random() * shapes.length)],
+      size: selectedSize
+    });
+  }
+  chainStart = -1;
+  chainEnd = -1;
+  render();
+  updateUI();
+  updateRandomBtn();
+}
+
+function updateRandomBtn() {
+  const btn = document.getElementById('randomBtn');
+  if (beads.length > 0) {
+    btn.disabled = true;
+    btn.title = '请先清空设计再随机生成';
+  } else {
+    btn.disabled = false;
+    btn.title = '';
+  }
+}
+
+function saveDesign() {
+  if (beads.length === 0) { alert('请先设计手串！'); return; }
+  const name = prompt('为这个设计起个名字：', '我的水晶手串');
+  if (name === null) return;
+  const designs = JSON.parse(localStorage.getItem('crystalDesigns') || '[]');
+  const thumbnail = canvas.toDataURL('image/png');
+  designs.push({
+    id: Date.now(),
+    name: name || '未命名',
+    beads: beads,
+    chain: { start: chainStart, end: chainEnd },
+    thumbnail: thumbnail,
+    createdAt: new Date().toISOString()
+  });
+  localStorage.setItem('crystalDesigns', JSON.stringify(designs));
+  alert('✅ 设计已保存！可在"我的设计"中查看。');
+}
+
+function exportDesign() {
+  if (beads.length === 0) { alert('请先设计手串！'); return; }
+  const link = document.createElement('a');
+  link.download = '我的手串设计.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+// ============================================================
+//  UI更新
+// ============================================================
+function updateUI() {
+  document.getElementById('beadCount').textContent = beads.length;
+
+  const list = document.getElementById('beadList');
+  if (beads.length === 0) {
+    list.innerHTML = '<span style="color:#9A8A8A; font-size:0.8rem;">点击添加</span>';
+  } else {
+    list.innerHTML = beads.map(function(b, i) {
+      const item = getCrystalById(b.id);
+      const name = item ? item.name : '未知';
+      const emoji = item ? item.emoji : '💎';
+      const shapeNames = { circle:'⚪', square:'⬜', triangle:'🔺', diamond:'💎' };
+      const shapeIcon = shapeNames[b.shape] || '⚪';
+      let cls = '';
+      if (i === chainStart) cls = ' chain-start';
+      if (i === chainEnd) cls = ' chain-end';
+      return '<div class="bead-item' + cls + '">' +
+        '<span class="bead-info">' + (i === chainStart ? '🟡 ' : i === chainEnd ? '⚪ ' : '') + emoji + ' ' + name + ' ' + shapeIcon + '</span>' +
+        '<span class="bead-actions">' +
+        '<button class="move-btn" onclick="moveBead(' + i + ',-1)" ' + (i === 0 ? 'disabled' : '') + '>↑</button>' +
+        '<button class="move-btn" onclick="moveBead(' + i + ',1)" ' + (i === beads.length-1 ? 'disabled' : '') + '>↓</button>' +
+        (chainMode ? '<button class="move-btn" onclick="setChainPoint(' + i + ')" style="color:#D4A84A;" title="设为链条点">⛓️</button>' : '') +
+        '<button class="del-btn" onclick="removeBead(' + i + ')">✕</button>' +
+        '</span></div>';
+    }).join('');
+  }
+
+  const preview = document.getElementById('previewBeads');
+  if (beads.length === 0) {
+    preview.innerHTML = '<span style="color:#9A8A8A; font-size:0.75rem;">暂无</span>';
+  } else {
+    preview.innerHTML = beads.map(function(b) {
+      const item = getCrystalById(b.id);
+      if (item && ACCESSORIES.some(a => a.id === b.id)) {
+        return '<span class="mini-accessory">' + (item.emoji || '✨') + '</span>';
+      } else {
+        const color = item ? (item.color || '#B8A9C9') : '#B8A9C9';
+        const radius = b.shape === 'circle' ? '50%' : b.shape === 'square' ? '4px' : b.shape === 'triangle' ? '0' : '50% 50% 50% 0';
+        return '<div class="mini-bead" style="background:' + color + '; border-radius:' + radius + '; transform:' + (b.shape === 'triangle' ? 'scale(0.7)' : '') + ';"></div>';
+      }
+    }).join('');
+  }
+}
+
+function setChainPoint(index) {
+  if (!chainMode) return;
+  if (chainStart === -1) {
+    chainStart = index;
+    chainEnd = -1;
+    document.getElementById('chainStatus').innerHTML = 
+      '<span class="dot-silver"></span> 起点已设！点击另一颗珠子设为 <b>终点（银色）</b>';
+  } else if (chainEnd === -1 && index !== chainStart) {
+    chainEnd = index;
+    document.getElementById('chainStatus').innerHTML = 
+      '<span class="dot-gold"></span> <span class="dot-silver"></span> 链条已连接！点击"清除链条"可重新设置';
+  } else {
+    // 重新设置起点
+    chainStart = index;
+    chainEnd = -1;
+    document.getElementById('chainStatus').innerHTML = 
+      '<span class="dot-gold"></span> 起点已更新！点击另一颗珠子设为 <b>终点（银色）</b>';
+  }
+  render();
+  updateUI();
+}
+
+// ============================================================
+//  标签切换
+// ============================================================
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('active', c.id === 'tab-' + tab));
+}
+
+// ============================================================
+//  画布点击 - 链条模式设置
+// ============================================================
+canvas.addEventListener('click', function(e) {
+  if (!chainMode || beads.length === 0) return;
+  
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const mouseX = (e.clientX - rect.left) * scaleX;
+  const mouseY = (e.clientY - rect.top) * scaleY;
+
+  const total = beads.length;
+  for (let i = 0; i < total; i++) {
+    const angle = (i / total) * 2 * Math.PI - Math.PI/2;
+    const x = centerX + ringRadius * Math.cos(angle);
+    const y = centerY + ringRadius * Math.sin(angle);
+    if (Math.hypot(mouseX - x, mouseY - y) < 30) {
+      setChainPoint(i);
+      break;
+    }
+  }
+});
+
+// ============================================================
+//  拖拽排序
+// ============================================================
+let dragStartIndex = -1;
+
+canvas.addEventListener('mousedown', function(e) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const mouseX = (e.clientX - rect.left) * scaleX;
+  const mouseY = (e.clientY - rect.top) * scaleY;
+
+  const total = beads.length;
+  for (let i = 0; i < total; i++) {
+    const angle = (i / total) * 2 * Math.PI - Math.PI/2;
+    const x = centerX + ringRadius * Math.cos(angle);
+    const y = centerY + ringRadius * Math.sin(angle);
+    if (Math.hypot(mouseX - x, mouseY - y) < 30) {
+      dragStartIndex = i;
+      isDragging = true;
+      canvas.style.cursor = 'grabbing';
+      break;
+    }
+  }
+});
+
+document.addEventListener('mousemove', function(e) {
+  if (!isDragging || dragStartIndex === -1) return;
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const mouseX = (e.clientX - rect.left) * scaleX;
+  const mouseY = (e.clientY - rect.top) * scaleY;
+
+  const total = beads.length;
+  let targetIndex = -1;
+  let minDist = Infinity;
+  for (let i = 0; i < total; i++) {
+    if (i === dragStartIndex) continue;
+    const angle = (i / total) * 2 * Math.PI - Math.PI/2;
+    const x = centerX + ringRadius * Math.cos(angle);
+    const y = centerY + ringRadius * Math.sin(angle);
+    const dist = Math.hypot(mouseX - x, mouseY - y);
+    if (dist < minDist) { minDist = dist; targetIndex = i; }
+  }
+  if (targetIndex !== -1 && targetIndex !== dragStartIndex) {
+    const item = beads.splice(dragStartIndex, 1)[0];
+    beads.splice(targetIndex, 0, item);
+    if (chainStart === dragStartIndex) chainStart = targetIndex;
+    else if (chainStart === targetIndex) chainStart = dragStartIndex;
+    if (chainEnd === dragStartIndex) chainEnd = targetIndex;
+    else if (chainEnd === targetIndex) chainEnd = dragStartIndex;
+    dragStartIndex = targetIndex;
+    render();
+    updateUI();
+  }
+});
+
+document.addEventListener('mouseup', function() {
+  if (isDragging) { isDragging = false; dragStartIndex = -1; canvas.style.cursor = 'default'; }
+});
+
+canvas.addEventListener('dblclick', function(e) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const mouseX = (e.clientX - rect.left) * scaleX;
+  const mouseY = (e.clientY - rect.top) * scaleY;
+
+  for (let i = beads.length - 1; i >= 0; i--) {
+    const angle = (i / beads.length) * 2 * Math.PI - Math.PI/2;
+    const x = centerX + ringRadius * Math.cos(angle);
+    const y = centerY + ringRadius * Math.sin(angle);
+    if (Math.hypot(mouseX - x, mouseY - y) < 30) { removeBead(i); break; }
+  }
+});
+
+
+// 检测从"我的设计"加载的数据
+var tempDesign = localStorage.getItem('tempLoadDesign');
+if (tempDesign) {
+  try {
+    var designData = JSON.parse(tempDesign);
+    if (designData && designData.beads && designData.beads.length > 0) {
+      beads = designData.beads;
+      if (designData.chain) {
+        chainStart = designData.chain.start || -1;
+        chainEnd = designData.chain.end || -1;
+      }
+      localStorage.removeItem('tempLoadDesign');
+      render();
+      updateUI();
+      updateRandomBtn();
+      // 提示加载成功
+    }
+  } catch(e) {
+    localStorage.removeItem('tempLoadDesign');
+  }
+}
+
+
+// ============================================================
+//  初始化
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  const grid = document.getElementById('crystalGrid');
+  CRYSTALS.forEach(function(c) {
+    const btn = document.createElement('button');
+    btn.className = 'crystal-btn';
+    btn.innerHTML = '<span class="icon">' + c.emoji + '</span>' + c.name + '<span class="sub">' + (c.group || '') + '</span>';
+    btn.dataset.id = c.id;
+    btn.addEventListener('click', function() { addBead(this.dataset.id); });
+    grid.appendChild(btn);
+  });
+
+  const accGrid = document.getElementById('accessoryGrid');
+  ACCESSORIES.forEach(function(a) {
+    const btn = document.createElement('button');
+    btn.className = 'accessory-btn';
+    const metalClass = a.metal === 'gold' ? 'metal-gold' : a.metal === 'silver' ? 'metal-silver' : '';
+    btn.innerHTML = '<span class="icon ' + metalClass + '">' + a.emoji + '</span>' + a.name;
+    btn.dataset.id = a.id;
+    btn.addEventListener('click', function() { addBead(this.dataset.id); });
+    accGrid.appendChild(btn);
+  });
+
+  document.querySelectorAll('#shapeSelector .option-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('#shapeSelector .option-btn').forEach(function(b) { b.classList.remove('active'); });
+      this.classList.add('active');
+      selectedShape = this.dataset.shape;
+    });
+  });
+
+  document.querySelectorAll('#sizeSelector .option-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('#sizeSelector .option-btn').forEach(function(b) { b.classList.remove('active'); });
+      this.classList.add('active');
+      selectedSize = parseInt(this.dataset.size);
+      if (beads.length > 0) {
+        beads.forEach(function(b) { b.size = selectedSize; });
+        render();
+        updateUI();
+      }
+    });
+  });
+
+  const templateGrid = document.getElementById('templateGrid');
+  TEMPLATES.forEach(function(t) {
+    const card = document.createElement('div');
+    card.className = 'template-card';
+    const preview = t.beads.slice(0, 8).map(function(id) {
+      const c = CRYSTALS.find(function(cr) { return cr.id === id; });
+      return c ? c.emoji : '💎';
+    }).join(' ') + (t.beads.length > 8 ? ' …' : '');
+    const sizeMap = { 14: '小', 22: '中', 30: '大', 38: '超大' };
+    card.innerHTML = '<div class="preview">' + preview + '</div>' +
+      '<div class="tname">' + t.name + '</div>' +
+      '<div class="tdesc">' + t.desc + ' · ' + sizeMap[selectedSize] + '</div>' +
+      '<div class="tcount">' + (sizeMap[selectedSize] === '小' ? 18 : sizeMap[selectedSize] === '中' ? 15 : sizeMap[selectedSize] === '大' ? 12 : 9) + '颗</div>';
+    card.addEventListener('click', function() { applyTemplate(t.id); });
+    templateGrid.appendChild(card);
+  });
+
+  render();
+  updateUI();
+  updateRandomBtn();
+});
+
+window.addBead = addBead;
+window.removeBead = removeBead;
+window.moveBead = moveBead;
+window.clearDesign = clearDesign;
+window.randomDesign = randomDesign;
+window.saveDesign = saveDesign;
+window.exportDesign = exportDesign;
+window.autoArrange = autoArrange;
+window.applyTemplate = applyTemplate;
+window.switchTab = switchTab;
+window.toggleChainMode = toggleChainMode;
+window.clearChain = clearChain;
+window.setChainPoint = setChainPoint;
+</script>
+</body>
+</html>

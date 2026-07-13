@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作品集 · 晶灵工坊</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Quicksand', 'Segoe UI', sans-serif;
+      background: #FAF8FC;
+      background-image: radial-gradient(ellipse at 20% 30%, rgba(184,169,201,0.06) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 70%, rgba(212,197,169,0.04) 0%, transparent 50%);
+      color: #4A4040;
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    header {
+      background: rgba(255,255,255,0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(184,169,201,0.08);
+      padding: 16px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 30px rgba(74,64,64,0.03);
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #6A5A6E;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo i {
+      font-size: 1.8rem;
+      color: #B8A9C9;
+      background: rgba(184,169,201,0.12);
+      padding: 10px;
+      border-radius: 50%;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #5A4E4E;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      position: relative;
+      transition: all 0.35s;
+      background: transparent;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #B8A9C9, #D4C5A9);
+      border-radius: 10px;
+      transition: all 0.4s;
+      transform: translateX(-50%);
+    }
+    .nav-links a:hover::after,
+    .nav-links a.active::after { width: 65%; }
+    .nav-links a:hover { color: #3A2A3E; transform: translateY(-2px); }
+    .nav-links a.active { color: #4A3A4A; background: rgba(184,169,201,0.06); }
+
+    main { flex: 1; padding: 50px 0 30px; }
+    .page-title {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #5A4A5A;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .page-title i { color: #B8A9C9; margin-right: 8px; }
+    .page-subtitle {
+      text-align: center;
+      color: #8A7A7A;
+      font-size: 1.05rem;
+      margin-bottom: 40px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #B8A9C9, #C9B5D8);
+      color: #fff;
+      border: none;
+      padding: 11px 30px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(184,169,201,0.2);
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(184,169,201,0.3);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #B8A9C9;
+      color: #6A5A6E;
+      box-shadow: none;
+    }
+    .btn-outline:hover {
+      background: rgba(184,169,201,0.08);
+      box-shadow: 0 4px 16px rgba(184,169,201,0.08);
+    }
+    .btn-sm { padding: 7px 18px; font-size: 0.85rem; }
+
+    footer {
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid rgba(184,169,201,0.06);
+      text-align: center;
+      padding: 28px 0;
+      color: #7A6E6E;
+      font-size: 0.95rem;
+      margin-top: 40px;
+    }
+    footer i { color: #C9A9A9; margin: 0 4px; }
+
+    /* ===== 作品集网格 ===== */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 28px;
+      margin-top: 20px;
+    }
+
+    .gallery-card {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 24px;
+      overflow: hidden;
+      padding: 20px;
+      border: 1px solid rgba(184,169,201,0.06);
+      box-shadow: 0 4px 20px rgba(74,64,64,0.03);
+      transition: all 0.4s;
+      text-align: center;
+    }
+    .gallery-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(74,64,64,0.06);
+      border-color: rgba(184,169,201,0.12);
+    }
+
+    .gallery-card .image-wrap {
+      width: 100%;
+      height: 200px;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 14px;
+      background: #f0ecf5;
+      position: relative;
+    }
+    .gallery-card .image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+      transition: transform 0.5s;
+    }
+    .gallery-card:hover .image-wrap img {
+      transform: scale(1.04);
+    }
+
+    .gallery-card .image-wrap .placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8rem;
+      color: rgba(255,255,255,0.8);
+      border-radius: 16px;
+      transition: transform 0.5s;
+    }
+    .gallery-card:hover .image-wrap .placeholder {
+      transform: scale(1.04);
+    }
+    .gallery-card .image-wrap .placeholder .label {
+      font-size: 0.7rem;
+      margin-top: 6px;
+      font-weight: 600;
+      opacity: 0.7;
+      background: rgba(0,0,0,0.15);
+      padding: 2px 14px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+    }
+
+    .gallery-card h3 {
+      color: #5A4A5A;
+      font-size: 1.15rem;
+      margin: 6px 0 4px;
+    }
+    .gallery-card p {
+      color: #7A6E6E;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+    .gallery-card .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+    .gallery-card .tags span {
+      font-size: 0.6rem;
+      padding: 2px 12px;
+      border-radius: 20px;
+      background: rgba(184,169,201,0.06);
+      color: #6A5A6E;
+      border: 1px solid rgba(184,169,201,0.04);
+    }
+
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 40px 0 20px;
+    }
+    .section-divider .line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(184,169,201,0.15), transparent);
+    }
+    .section-divider .label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #8A7A7A;
+      letter-spacing: 2px;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+      nav { flex-direction: column; gap: 10px; }
+      .nav-links { justify-content: center; gap: 4px; }
+      .nav-links a { padding: 8px 14px; font-size: 0.82rem; }
+      .page-title { font-size: 1.8rem; }
+      .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 18px; }
+      .gallery-card .image-wrap { height: 160px; }
+    }
+    @media (max-width: 480px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <nav class="container">
+    <div class="logo"><i class="fas fa-gem"></i>晶灵工坊</div>
+    <ul class="nav-links">
+      <li><a href="index.html">首页</a></li>
+      <li><a href="gallery.html" class="active">作品集</a></li>
+      <li><a href="designer.html">DIY设计</a></li>
+      <li><a href="guide.html">灵感指南</a></li>
+      <li><a href="my-designs.html">我的设计</a></li>
+      <li><a href="about.html">关于</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <div class="container">
+    <h1 class="page-title"><i class="fas fa-images"></i> 作品集</h1>
+    <p class="page-subtitle">精选水晶手串设计 · 点击"去设计"开始创作</p>
+
+    <div class="gallery-grid" id="galleryGrid"></div>
+
+    <div style="text-align:center; margin-top:40px; padding:24px; background:rgba(255,255,255,0.4); border-radius:20px; border:1px solid rgba(184,169,201,0.04);">
+      <p style="color:#8A7A7A; font-size:0.9rem;">
+        <i class="fas fa-paint-brush" style="color:#B8A9C9;"></i>
+        想要独一无二的设计？去 <a href="designer.html" style="color:#B8A9C9; font-weight:600; text-decoration:none; border-bottom:2px solid rgba(184,169,201,0.2);">DIY设计器</a> 自由创作吧！
+      </p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p><i class="fas fa-gem"></i> 晶灵工坊 · 用设计连接自然能量 <i class="fas fa-sparkles"></i></p>
+  </div>
+</footer>
+
+<script>
+// ============================================================
+//  作品数据（10个）
+// ============================================================
+var GALLERY_ITEMS = [
+  // ===== 精选作品（来自首页） =====
+  {
+    id: 'featured_1',
+    name: '💜 浮光梦金',
+    desc: '紫水晶 + 月光石 · 紫气东来',
+    tags: ['紫色', '静心', '顶轮'],
+    img: '紫水晶.jpg',
+    placeholderBg: 'linear-gradient(135deg, #9B6BB5, #B88AD0)',
+    placeholderIcon: '💜'
+  },
+  {
+    id: 'featured_2',
+    name: '💙 海洋之息',
+    desc: '海蓝宝 + 白水晶 · 净化能量',
+    tags: ['蓝色', '净化', '喉轮'],
+    img: '海蓝宝.jpg',
+    placeholderBg: 'linear-gradient(135deg, #6EC8D9, #8AD8E8)',
+    placeholderIcon: '💙'
+  },
+  {
+    id: 'featured_3',
+    name: '💗 桃花沁红',
+    desc: '粉晶 + 红纹石 · 提升人缘',
+    tags: ['粉色', '爱情', '心轮'],
+    img: '粉晶.jpg',
+    placeholderBg: 'linear-gradient(135deg, #F4A0B0, #F8BCC8)',
+    placeholderIcon: '💗'
+  },
+  {
+    id: 'featured_4',
+    name: '🤍 静谧蓝夜',
+    desc: '月光石 + 蓝晶石 · 深度宁静',
+    tags: ['白色', '宁静', '顶轮'],
+    img: '月光石.jpg',
+    placeholderBg: 'linear-gradient(135deg, #C9B1FF, #DCC8FF)',
+    placeholderIcon: '🤍'
+  },
+
+  // ===== 新增手串 6个 =====
+  {
+    id: 'new_1',
+    name: '💚 绿野仙踪',
+    desc: '绿幽灵 ·正财兴旺',
+    tags: ['绿色', '事业', '心轮'],
+    img: '绿幽灵.jpg',
+    placeholderBg: 'linear-gradient(135deg, #5AB88A, #7BC8A4)',
+    placeholderIcon: '💚'
+  },
+  {
+    id: 'new_2',
+    name: '💛 雪映金阳',
+    desc: '黄水晶 + 白水晶 · 财富自信',
+    tags: ['黄色', '财富', '太阳轮'],
+    img: '黄水晶.jpg',
+    placeholderBg: 'linear-gradient(135deg, #F5C84A, #E8B830)',
+    placeholderIcon: '💛'
+  },
+  {
+    id: 'new_3',
+    name: '🖤 守护之盾',
+    desc: '黑曜石 + 红玉髓 · 辟邪保护',
+    tags: ['黑色', '保护', '海底轮'],
+    img: '黑曜石.jpg',
+    placeholderBg: 'linear-gradient(135deg, #4A4A5A, #6A6A7A)',
+    placeholderIcon: '🖤'
+  },
+  {
+    id: 'new_4',
+    name: '🧡 落日余晖',
+    desc: '红玉髓 + 太阳石 · 活力行动',
+    tags: ['橙色', '活力', '脐轮'],
+    img: '太阳石.jpg',
+    placeholderBg: 'linear-gradient(135deg, #E8896A, #F0A050)',
+    placeholderIcon: '🧡'
+  },
+  {
+    id: 'new_5',
+    name: '🔮 玄色为名',
+    desc: '紫龙晶 · 灵性觉醒',
+    tags: ['紫色', '灵性', '顶轮'],
+    img: '紫龙晶.jpg',
+    placeholderBg: 'linear-gradient(135deg, #8B5BA5, #B05A9B)',
+    placeholderIcon: '🔮'
+  },
+  {
+    id: 'new_6',
+    name: '🌈 彩虹之约',
+    desc: '碧玺  · 平衡能量',
+    tags: ['多色', '平衡', '所有脉轮'],
+    img: '碧玺.jpg',
+    placeholderBg: 'linear-gradient(135deg, #E8A0B0, #E8D8F0)',
+    placeholderIcon: '🌈'
+  }
+];
+
+// ============================================================
+//  渲染作品集
+// ============================================================
+function renderGallery() {
+  var grid = document.getElementById('galleryGrid');
+  var html = '';
+
+  for (var i = 0; i < GALLERY_ITEMS.length; i++) {
+    var item = GALLERY_ITEMS[i];
+    var tagsHtml = '';
+    for (var t = 0; t < item.tags.length; t++) {
+      tagsHtml += '<span>' + item.tags[t] + '</span>';
+    }
+
+    var imageHtml = '<img src="images/' + item.img + '" alt="' + item.name + '" onerror="this.style.display=\'none\';this.parentElement.innerHTML=\'<div class=placeholder style=background:' + item.placeholderBg + ';><span style=font-size:3rem;>' + item.placeholderIcon + '</span><span class=label>' + item.img.replace('.jpg','') + '</span></div>\'">';
+
+    html += '<div class="gallery-card">' +
+      '<div class="image-wrap">' +
+        imageHtml +
+      '</div>' +
+      '<h3>' + item.name + '</h3>' +
+      '<p>' + item.desc + '</p>' +
+      '<div class="tags">' + tagsHtml + '</div>' +
+      '<a href="designer.html" class="btn btn-outline btn-sm">去设计</a>' +
+    '</div>';
+  }
+
+  grid.innerHTML = html;
+}
+
+// ============================================================
+//  初始化
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  renderGallery();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>灵感指南 · 晶灵工坊</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Quicksand', 'Segoe UI', sans-serif;
+      background: #FAF8FC;
+      background-image: radial-gradient(ellipse at 20% 30%, rgba(184,169,201,0.06) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 70%, rgba(212,197,169,0.04) 0%, transparent 50%);
+      color: #4A4040;
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    header {
+      background: rgba(255,255,255,0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(184,169,201,0.08);
+      padding: 16px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 30px rgba(74,64,64,0.03);
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #6A5A6E;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo i {
+      font-size: 1.8rem;
+      color: #B8A9C9;
+      background: rgba(184,169,201,0.12);
+      padding: 10px;
+      border-radius: 50%;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #5A4E4E;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      position: relative;
+      transition: all 0.35s;
+      background: transparent;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #B8A9C9, #D4C5A9);
+      border-radius: 10px;
+      transition: all 0.4s;
+      transform: translateX(-50%);
+    }
+    .nav-links a:hover::after,
+    .nav-links a.active::after { width: 65%; }
+    .nav-links a:hover { color: #3A2A3E; transform: translateY(-2px); }
+    .nav-links a.active { color: #4A3A4A; background: rgba(184,169,201,0.06); }
+
+    main { flex: 1; padding: 50px 0 30px; }
+    .page-title {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #5A4A5A;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .page-title i { color: #B8A9C9; margin-right: 8px; }
+    .page-subtitle {
+      text-align: center;
+      color: #8A7A7A;
+      font-size: 1.05rem;
+      margin-bottom: 40px;
+    }
+
+    footer {
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid rgba(184,169,201,0.06);
+      text-align: center;
+      padding: 28px 0;
+      color: #7A6E6E;
+      font-size: 0.95rem;
+      margin-top: 40px;
+    }
+    footer i { color: #C9A9A9; margin: 0 4px; }
+
+    /* ===== 搜索区域 ===== */
+    .search-section {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 24px;
+      padding: 32px 36px;
+      border: 1px solid rgba(184,169,201,0.06);
+      box-shadow: 0 4px 20px rgba(74,64,64,0.03);
+      margin-bottom: 30px;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      background: rgba(245,240,248,0.3);
+      border-radius: 60px;
+      padding: 6px 6px 6px 24px;
+      border: 2px solid rgba(184,169,201,0.08);
+      transition: 0.3s;
+    }
+    .search-box:focus-within {
+      border-color: #B8A9C9;
+      box-shadow: 0 0 30px rgba(184,169,201,0.06);
+    }
+    .search-box i {
+      color: #B8A9C9;
+      font-size: 1.1rem;
+    }
+    .search-box input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 14px 0;
+      font-size: 1rem;
+      font-family: 'Quicksand', sans-serif;
+      color: #4A4040;
+      outline: none;
+    }
+    .search-box input::placeholder {
+      color: #B8A9C9;
+      opacity: 0.6;
+    }
+    .search-box .btn-search {
+      background: linear-gradient(135deg, #B8A9C9, #C9B5D8);
+      color: #fff;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: 0.3s;
+      font-family: 'Quicksand', sans-serif;
+    }
+    .search-box .btn-search:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 20px rgba(184,169,201,0.3);
+    }
+
+    /* ===== 关键词标签 ===== */
+    .keyword-section {
+      margin-top: 20px;
+    }
+    .keyword-section .label {
+      font-size: 0.8rem;
+      color: #8A7A7A;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .keyword-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .keyword-tag {
+      padding: 6px 18px;
+      border-radius: 30px;
+      border: 1.5px solid rgba(184,169,201,0.12);
+      background: rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #5A4E4E;
+      font-family: 'Quicksand', sans-serif;
+    }
+    .keyword-tag:hover {
+      border-color: #B8A9C9;
+      background: rgba(184,169,201,0.06);
+      transform: translateY(-2px);
+    }
+    .keyword-tag.active {
+      border-color: #B8A9C9;
+      background: rgba(184,169,201,0.12);
+      color: #4A3A4A;
+    }
+
+    /* ===== 结果展示 ===== */
+    .result-section {
+      margin-top: 10px;
+    }
+    .result-count {
+      font-size: 0.85rem;
+      color: #8A7A7A;
+      margin-bottom: 16px;
+    }
+    .result-count strong { color: #B8A9C9; }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .result-card {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid rgba(184,169,201,0.06);
+      box-shadow: 0 4px 20px rgba(74,64,64,0.03);
+      transition: all 0.4s;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .result-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(74,64,64,0.06);
+      border-color: rgba(184,169,201,0.12);
+    }
+
+    .result-card .symbol {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      flex-shrink: 0;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    }
+    .result-card .symbol .glow {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      opacity: 0.15;
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { transform: scale(1); opacity: 0.15; }
+      50% { transform: scale(1.08); opacity: 0.25; }
+    }
+
+    .result-card .info { flex: 1; }
+    .result-card .info .name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #5A4A5A;
+    }
+    .result-card .info .meaning {
+      font-size: 0.85rem;
+      color: #7A6E6E;
+      margin: 4px 0;
+    }
+    .result-card .info .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 6px;
+    }
+    .result-card .info .tags span {
+      font-size: 0.6rem;
+      padding: 2px 12px;
+      border-radius: 20px;
+      background: rgba(184,169,201,0.06);
+      color: #6A5A6E;
+      border: 1px solid rgba(184,169,201,0.04);
+    }
+    .result-card .info .chakra {
+      font-size: 0.7rem;
+      color: #B8A9C9;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .no-result {
+      text-align: center;
+      padding: 40px 20px;
+      color: #9A8A8A;
+      grid-column: 1 / -1;
+    }
+    .no-result i {
+      font-size: 2.5rem;
+      color: #D4C5A9;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    /* ===== 全部展示 ===== */
+    .all-crystals-title {
+      font-size: 1.3rem;
+      color: #5A4A5A;
+      margin: 30px 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .all-crystals-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(184,169,201,0.15), transparent);
+    }
+
+    @media (max-width: 768px) {
+      nav { flex-direction: column; gap: 10px; }
+      .nav-links { justify-content: center; gap: 4px; }
+      .nav-links a { padding: 8px 14px; font-size: 0.82rem; }
+      .page-title { font-size: 1.8rem; }
+      .search-section { padding: 20px; }
+      .search-box { flex-wrap: wrap; padding: 12px; border-radius: 24px; }
+      .search-box input { width: 100%; padding: 10px 0; }
+      .search-box .btn-search { width: 100%; justify-content: center; }
+      .result-grid { grid-template-columns: 1fr; }
+      .result-card { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <nav class="container">
+    <div class="logo"><i class="fas fa-gem"></i>晶灵工坊</div>
+    <ul class="nav-links">
+      <li><a href="index.html">首页</a></li>
+      <li><a href="gallery.html">作品集</a></li>
+      <li><a href="designer.html">DIY设计</a></li>
+      <li><a href="guide.html" class="active">灵感指南</a></li>
+      <li><a href="my-designs.html">我的设计</a></li>
+      <li><a href="about.html">关于</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <div class="container">
+    <h1 class="page-title"><i class="fas fa-compass"></i> 灵感指南</h1>
+    <p class="page-subtitle">搜索水晶名称或疗愈功效 · 发现属于你的能量之石</p>
+
+    <!-- 搜索区域 -->
+    <div class="search-section">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="输入水晶名称或疗愈功效... 例如「紫水晶」「爱情」「静心」" onkeyup="if(event.key==='Enter') searchCrystals()">
+        <button class="btn-search" onclick="searchCrystals()"><i class="fas fa-arrow-right"></i> 搜索</button>
+      </div>
+
+      <!-- 关键词标签 -->
+      <div class="keyword-section">
+        <span class="label">🏷️ 热门关键词</span>
+        <div class="keyword-tags" id="keywordTags"></div>
+      </div>
+    </div>
+
+    <!-- 搜索结果 -->
+    <div class="result-section" id="resultSection">
+      <div class="result-count" id="resultCount"></div>
+      <div class="result-grid" id="resultGrid"></div>
+    </div>
+
+    <!-- 全部水晶 -->
+    <div class="all-crystals-title"><i class="fas fa-gem" style="color:#B8A9C9;"></i> 全部水晶</div>
+    <div class="result-grid" id="allCrystalsGrid"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p><i class="fas fa-gem"></i> 晶灵工坊 · 用设计连接自然能量 <i class="fas fa-sparkles"></i></p>
+  </div>
+</footer>
+
+<script>
+// ============================================================
+//  水晶数据库（含疗愈功效、颜色、寓意、脉轮）
+// ============================================================
+var CRYSTAL_DB = [
+  { id: 'amethyst', name: '紫水晶', emoji: '💜', color: '#9B6BB5', 
+    meaning: '智慧 · 静心 · 直觉', 
+    effects: ['智慧', '静心', '直觉', '冥想', '睡眠'],
+    chakra: '顶轮', group: '紫色' },
+  { id: 'charoite', name: '紫龙晶', emoji: '🔮', color: '#8B5BA5',
+    meaning: '转化 · 灵性 · 觉醒',
+    effects: ['转化', '灵性', '觉醒', '冥想'],
+    chakra: '顶轮', group: '紫色' },
+  { id: 'sugilite', name: '舒俱来', emoji: '💎', color: '#B05A9B',
+    meaning: '疗愈 · 保护 · 灵性',
+    effects: ['疗愈', '保护', '灵性', '净化'],
+    chakra: '顶轮', group: '紫色' },
+  { id: 'rose', name: '粉晶', emoji: '💗', color: '#F4A0B0',
+    meaning: '爱情 · 人缘 · 温柔',
+    effects: ['爱情', '人缘', '温柔', '疗愈', '情感'],
+    chakra: '心轮', group: '粉色' },
+  { id: 'rhodochrosite', name: '红纹石', emoji: '❤️', color: '#E8707A',
+    meaning: '激情 · 勇气 · 情感',
+    effects: ['激情', '勇气', '情感', '自信'],
+    chakra: '心轮', group: '粉色' },
+  { id: 'morganite', name: '摩根石', emoji: '🌸', color: '#F0B8C8',
+    meaning: '神圣之爱 · 慈悲 · 和平',
+    effects: ['爱', '慈悲', '和平', '情感'],
+    chakra: '心轮', group: '粉色' },
+  { id: 'aquamarine', name: '海蓝宝', emoji: '💙', color: '#6EC8D9',
+    meaning: '沟通 · 勇气 · 净化',
+    effects: ['沟通', '勇气', '净化', '表达', '旅行'],
+    chakra: '喉轮', group: '蓝色' },
+  { id: 'lapis', name: '青金石', emoji: '🌌', color: '#4A6A9B',
+    meaning: '智慧 · 真理 · 洞察',
+    effects: ['智慧', '真理', '洞察', '冥想', '沟通'],
+    chakra: '喉轮', group: '蓝色' },
+  { id: 'sodalite', name: '苏打石', emoji: '🔷', color: '#5A7AAA',
+    meaning: '逻辑 · 理性 · 平静',
+    effects: ['逻辑', '理性', '平静', '专注'],
+    chakra: '喉轮', group: '蓝色' },
+  { id: 'citrine', name: '黄水晶', emoji: '💛', color: '#F5C84A',
+    meaning: '财富 · 自信 · 阳光',
+    effects: ['财富', '自信', '阳光', '创造力', '活力'],
+    chakra: '太阳轮', group: '黄色' },
+  { id: 'golden', name: '金发晶', emoji: '⭐', color: '#E8B830',
+    meaning: '财富 · 力量 · 领导力',
+    effects: ['财富', '力量', '领导力', '自信'],
+    chakra: '太阳轮', group: '黄色' },
+  { id: 'tiger', name: '虎眼石', emoji: '🐯', color: '#C8A040',
+    meaning: '勇气 · 保护 · 决心',
+    effects: ['勇气', '保护', '决心', '自信'],
+    chakra: '太阳轮', group: '黄色' },
+  { id: 'green', name: '绿幽灵', emoji: '💚', color: '#5AB88A',
+    meaning: '事业 · 健康 · 吸引',
+    effects: ['事业', '健康', '吸引', '财富', '成长'],
+    chakra: '心轮', group: '绿色' },
+  { id: 'peridot', name: '橄榄石', emoji: '🍀', color: '#8AC84A',
+    meaning: '幸运 · 新生 · 活力',
+    effects: ['幸运', '新生', '活力', '健康', '净化'],
+    chakra: '心轮', group: '绿色' },
+  { id: 'aventurine', name: '东陵玉', emoji: '🌿', color: '#6AB87A',
+    meaning: '机遇 · 成长 · 疗愈',
+    effects: ['机遇', '成长', '疗愈', '财富'],
+    chakra: '心轮', group: '绿色' },
+  { id: 'carnelian', name: '红玉髓', emoji: '🧡', color: '#E8896A',
+    meaning: '活力 · 行动 · 创造',
+    effects: ['活力', '行动', '创造', '勇气', '激情'],
+    chakra: '脐轮', group: '红色' },
+  { id: 'garnet', name: '石榴石', emoji: '❤️‍🔥', color: '#C0404A',
+    meaning: '热情 · 忠诚 · 能量',
+    effects: ['热情', '忠诚', '能量', '爱情'],
+    chakra: '脐轮', group: '红色' },
+  { id: 'sunstone', name: '太阳石', emoji: '☀️', color: '#F0A050',
+    meaning: '喜悦 · 活力 · 自信',
+    effects: ['喜悦', '活力', '自信', '创造力'],
+    chakra: '脐轮', group: '红色' },
+  { id: 'moonstone', name: '月光石', emoji: '🤍', color: '#C9B1FF',
+    meaning: '温柔 · 平衡 · 直觉',
+    effects: ['温柔', '平衡', '直觉', '情绪', '睡眠'],
+    chakra: '顶轮', group: '白色' },
+  { id: 'opal', name: '蛋白石', emoji: '🌈', color: '#E8D8F0',
+    meaning: '灵感 · 希望 · 变化',
+    effects: ['灵感', '希望', '变化', '创造力'],
+    chakra: '顶轮', group: '白色' },
+  { id: 'howlite', name: '白纹石', emoji: '⬜', color: '#E8E0E8',
+    meaning: '平静 · 专注 · 耐心',
+    effects: ['平静', '专注', '耐心', '冥想'],
+    chakra: '顶轮', group: '白色' },
+  { id: 'obsidian', name: '黑曜石', emoji: '🖤', color: '#4A4A5A',
+    meaning: '保护 · 辟邪 · 扎根',
+    effects: ['保护', '辟邪', '扎根', '净化'],
+    chakra: '海底轮', group: '黑色' },
+  { id: 'hematite', name: '赤铁矿', emoji: '⚫', color: '#5A4A4A',
+    meaning: '扎根 · 专注 · 平衡',
+    effects: ['扎根', '专注', '平衡', '保护'],
+    chakra: '海底轮', group: '黑色' },
+  { id: 'tourmaline', name: '碧玺', emoji: '🌈', color: '#E8A0B0',
+    meaning: '净化 · 保护 · 平衡',
+    effects: ['净化', '保护', '平衡', '能量'],
+    chakra: '所有脉轮', group: '多色' },
+  { id: 'fluorite', name: '萤石', emoji: '💠', color: '#80C8D8',
+    meaning: '专注 · 秩序 · 清晰',
+    effects: ['专注', '秩序', '清晰', '学习'],
+    chakra: '眉心轮', group: '多色' },
+  { id: 'chalcedony', name: '玉髓', emoji: '🌀', color: '#B8C8D8',
+    meaning: '平和 · 善意 · 和谐',
+    effects: ['平和', '善意', '和谐', '沟通'],
+    chakra: '喉轮', group: '多色' },
+  { id: 'jasper', name: '碧玉', emoji: '🗿', color: '#B0885A',
+    meaning: '扎根 · 稳定 · 滋养',
+    effects: ['扎根', '稳定', '滋养', '保护'],
+    chakra: '海底轮', group: '多色' },
+  { id: 'moldavite', name: '陨石', emoji: '☄️', color: '#3A8A5A',
+    meaning: '加速 · 转化 · 觉醒',
+    effects: ['加速', '转化', '觉醒', '灵性'],
+    chakra: '心轮', group: '绿色' },
+  { id: 'serpentine', name: '蛇纹石', emoji: '🐍', color: '#7AAA6A',
+    meaning: '疗愈 · 重生 · 智慧',
+    effects: ['疗愈', '重生', '智慧', '平衡'],
+    chakra: '心轮', group: '绿色' }
+];
+
+// ============================================================
+//  关键词
+// ============================================================
+var KEYWORDS = [
+  { label: '❤️ 爱情', value: '爱情' },
+  { label: '💰 财富', value: '财富' },
+  { label: '🧘 静心', value: '静心' },
+  { label: '🛡️ 保护', value: '保护' },
+  { label: '💬 沟通', value: '沟通' },
+  { label: '🌟 自信', value: '自信' },
+  { label: '💪 勇气', value: '勇气' },
+  { label: '🌿 疗愈', value: '疗愈' },
+  { label: '🎯 专注', value: '专注' },
+  { label: '💜 紫色', value: '紫色' },
+  { label: '💗 粉色', value: '粉色' },
+  { label: '💙 蓝色', value: '蓝色' },
+  { label: '💚 绿色', value: '绿色' },
+  { label: '💛 黄色', value: '黄色' },
+  { label: '🖤 黑色', value: '黑色' }
+];
+
+// ============================================================
+//  搜索逻辑
+// ============================================================
+function searchCrystals() {
+  var input = document.getElementById('searchInput').value.trim().toLowerCase();
+  var results = document.getElementById('resultGrid');
+  var count = document.getElementById('resultCount');
+  var allGrid = document.getElementById('allCrystalsGrid');
+
+  if (!input) {
+    results.innerHTML = '';
+    count.innerHTML = '';
+    showAllCrystals();
+    return;
+  }
+
+  var matched = [];
+  for (var i = 0; i < CRYSTAL_DB.length; i++) {
+    var c = CRYSTAL_DB[i];
+    var nameMatch = c.name.toLowerCase().indexOf(input) !== -1;
+    var meaningMatch = c.meaning.toLowerCase().indexOf(input) !== -1;
+    var effectsMatch = false;
+    for (var j = 0; j < c.effects.length; j++) {
+      if (c.effects[j].toLowerCase().indexOf(input) !== -1) { effectsMatch = true; break; }
+    }
+    var groupMatch = c.group.toLowerCase().indexOf(input) !== -1;
+    var chakraMatch = c.chakra.toLowerCase().indexOf(input) !== -1;
+    if (nameMatch || meaningMatch || effectsMatch || groupMatch || chakraMatch) {
+      matched.push(c);
+    }
+  }
+
+  if (matched.length === 0) {
+    results.innerHTML = '<div class="no-result"><i class="fas fa-search"></i><p>没有找到与「' + input + '」相关的水晶</p><p style="font-size:0.85rem;margin-top:4px;">试试其他关键词：爱情、财富、静心、保护...</p></div>';
+    count.innerHTML = '<span style="color:#9A8A8A;">0 个结果</span>';
+    allGrid.innerHTML = '';
+    return;
+  }
+
+  count.innerHTML = '找到 <strong>' + matched.length + '</strong> 个相关水晶';
+  var html = '';
+  for (var k = 0; k < matched.length; k++) {
+    html += createCard(matched[k]);
+  }
+  results.innerHTML = html;
+  allGrid.innerHTML = '';
+}
+
+function createCard(c) {
+  var effectsHtml = '';
+  var effectsToShow = c.effects.slice(0, 4);
+  for (var i = 0; i < effectsToShow.length; i++) {
+    effectsHtml += '<span>' + effectsToShow[i] + '</span>';
+  }
+  return '<div class="result-card">' +
+    '<div class="symbol" style="background:' + c.color + '22; color:' + c.color + ';">' +
+      '<div class="glow" style="background:' + c.color + ';"></div>' +
+      '<span style="font-size:2.2rem;">' + c.emoji + '</span>' +
+    '</div>' +
+    '<div class="info">' +
+      '<div class="name">' + c.name + '</div>' +
+      '<div class="meaning">' + c.meaning + '</div>' +
+      '<div class="tags">' + effectsHtml + '</div>' +
+      '<div class="chakra">✦ ' + c.chakra + ' · ' + c.group + '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function showAllCrystals() {
+  var grid = document.getElementById('allCrystalsGrid');
+  var html = '';
+  for (var i = 0; i < CRYSTAL_DB.length; i++) {
+    html += createCard(CRYSTAL_DB[i]);
+  }
+  grid.innerHTML = html;
+}
+
+// ============================================================
+//  关键词点击
+// ============================================================
+function setupKeywords() {
+  var container = document.getElementById('keywordTags');
+  for (var i = 0; i < KEYWORDS.length; i++) {
+    var kw = KEYWORDS[i];
+    var tag = document.createElement('span');
+    tag.className = 'keyword-tag';
+    tag.textContent = kw.label;
+    tag.dataset.value = kw.value;
+    (function(val) {
+      tag.addEventListener('click', function() {
+        document.getElementById('searchInput').value = val;
+        var allTags = document.querySelectorAll('.keyword-tag');
+        for (var t = 0; t < allTags.length; t++) {
+          allTags[t].classList.remove('active');
+        }
+        this.classList.add('active');
+        searchCrystals();
+      });
+    })(kw.value);
+    container.appendChild(tag);
+  }
+}
+
+// ============================================================
+//  初始化
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  setupKeywords();
+  showAllCrystals();
+});
+
+window.searchCrystals = searchCrystals;
+</script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的设计 · 晶灵工坊</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Quicksand', 'Segoe UI', sans-serif;
+      background: #FAF8FC;
+      background-image: radial-gradient(ellipse at 20% 30%, rgba(184,169,201,0.06) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 70%, rgba(212,197,169,0.04) 0%, transparent 50%);
+      color: #4A4040;
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    header {
+      background: rgba(255,255,255,0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(184,169,201,0.08);
+      padding: 16px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 30px rgba(74,64,64,0.03);
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #6A5A6E;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo i {
+      font-size: 1.8rem;
+      color: #B8A9C9;
+      background: rgba(184,169,201,0.12);
+      padding: 10px;
+      border-radius: 50%;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #5A4E4E;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      position: relative;
+      transition: all 0.35s;
+      background: transparent;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #B8A9C9, #D4C5A9);
+      border-radius: 10px;
+      transition: all 0.4s;
+      transform: translateX(-50%);
+    }
+    .nav-links a:hover::after,
+    .nav-links a.active::after { width: 65%; }
+    .nav-links a:hover { color: #3A2A3E; transform: translateY(-2px); }
+    .nav-links a.active { color: #4A3A4A; background: rgba(184,169,201,0.06); }
+
+    main { flex: 1; padding: 50px 0 30px; }
+    .page-title {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #5A4A5A;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .page-title i { color: #B8A9C9; margin-right: 8px; }
+    .page-subtitle {
+      text-align: center;
+      color: #8A7A7A;
+      font-size: 1.05rem;
+      margin-bottom: 40px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #B8A9C9, #C9B5D8);
+      color: #fff;
+      border: none;
+      padding: 11px 30px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(184,169,201,0.2);
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(184,169,201,0.3);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #B8A9C9;
+      color: #6A5A6E;
+      box-shadow: none;
+    }
+    .btn-outline:hover {
+      background: rgba(184,169,201,0.08);
+      box-shadow: 0 4px 16px rgba(184,169,201,0.08);
+    }
+    .btn-sm { padding: 7px 18px; font-size: 0.85rem; }
+    .btn-danger {
+      background: linear-gradient(135deg, #C9A9A9, #D4B8B8);
+      box-shadow: 0 4px 16px rgba(201,169,169,0.2);
+    }
+    .btn-danger:hover { box-shadow: 0 8px 28px rgba(201,169,169,0.3); }
+    .btn-rename {
+      background: linear-gradient(135deg, #D4C5A9, #C9B5D8);
+      box-shadow: 0 4px 16px rgba(212,197,169,0.2);
+    }
+    .btn-rename:hover { box-shadow: 0 8px 28px rgba(212,197,169,0.3); }
+
+    footer {
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid rgba(184,169,201,0.06);
+      text-align: center;
+      padding: 28px 0;
+      color: #7A6E6E;
+      font-size: 0.95rem;
+      margin-top: 40px;
+    }
+    footer i { color: #C9A9A9; margin: 0 4px; }
+
+    .design-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 28px;
+      margin-top: 20px;
+    }
+    .design-item {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 24px;
+      overflow: hidden;
+      padding: 20px;
+      border: 1px solid rgba(184,169,201,0.06);
+      box-shadow: 0 4px 20px rgba(74,64,64,0.03);
+      transition: all 0.4s;
+      text-align: center;
+    }
+    .design-item:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(74,64,64,0.06);
+      border-color: rgba(184,169,201,0.12);
+    }
+    .design-item .preview-img {
+      width: 100%;
+      height: 180px;
+      border-radius: 16px;
+      object-fit: cover;
+      background: #f0ecf5;
+      margin-bottom: 14px;
+    }
+    .design-item .name-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 8px 0 4px;
+    }
+    .design-item .name-row h3 {
+      color: #5A4A5A;
+      font-size: 1.15rem;
+    }
+    .design-item .name-row .rename-btn-sm {
+      background: none;
+      border: none;
+      color: #B8A9C9;
+      cursor: pointer;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: 0.2s;
+    }
+    .design-item .name-row .rename-btn-sm:hover {
+      background: rgba(184,169,201,0.1);
+      color: #6A5A6E;
+    }
+    .design-item .date {
+      font-size: 0.8rem;
+      color: #9A8A8A;
+      margin-bottom: 12px;
+    }
+    .design-item .actions {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #9A8A8A;
+    }
+    .empty-state i {
+      font-size: 3rem;
+      color: #D4C5A9;
+      display: block;
+      margin-bottom: 16px;
+    }
+    .empty-state a {
+      color: #B8A9C9;
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 2px solid rgba(184,169,201,0.2);
+      transition: 0.3s;
+    }
+    .empty-state a:hover { border-bottom-color: #B8A9C9; }
+
+    @media (max-width: 768px) {
+      nav { flex-direction: column; gap: 10px; }
+      .nav-links { justify-content: center; gap: 4px; }
+      .nav-links a { padding: 8px 14px; font-size: 0.82rem; }
+      .page-title { font-size: 1.8rem; }
+      .design-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .design-grid { grid-template-columns: 1fr; }
+      .design-item .actions { flex-direction: column; align-items: center; }
+      .design-item .actions .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <nav class="container">
+    <div class="logo"><i class="fas fa-gem"></i>晶灵工坊</div>
+    <ul class="nav-links">
+      <li><a href="index.html">首页</a></li>
+      <li><a href="gallery.html">作品集</a></li>
+      <li><a href="designer.html">DIY设计</a></li>
+      <li><a href="guide.html">灵感指南</a></li>
+      <li><a href="my-designs.html" class="active">我的设计</a></li>
+      <li><a href="about.html">关于</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <div class="container">
+    <h1 class="page-title"><i class="fas fa-save" style="color:#B8A9C9;"></i> 我的设计</h1>
+    <p class="page-subtitle">所有保存在本地的设计作品 · 点击"加载"继续编辑 · "重命名"修改名称</p>
+
+    <div id="designList" class="design-grid"></div>
+
+    <div id="emptyMsg" class="empty-state" style="display:none;">
+      <i class="fas fa-inbox"></i>
+      <p style="font-size:1.1rem;">还没有保存的设计</p>
+      <p style="font-size:0.95rem; margin-top:6px;">去 <a href="designer.html">DIY设计</a> 创作你的第一串水晶手串吧！</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p><i class="fas fa-gem"></i> 晶灵工坊 · 用设计连接自然能量 <i class="fas fa-sparkles"></i></p>
+  </div>
+</footer>
+
+<script>
+// ============================================================
+//  加载设计列表
+// ============================================================
+function loadDesigns() {
+  var designs = JSON.parse(localStorage.getItem('crystalDesigns') || '[]');
+  var container = document.getElementById('designList');
+  var emptyMsg = document.getElementById('emptyMsg');
+
+  if (designs.length === 0) {
+    container.innerHTML = '';
+    emptyMsg.style.display = 'block';
+    return;
+  }
+  emptyMsg.style.display = 'none';
+
+  var html = '';
+  for (var i = 0; i < designs.length; i++) {
+    var d = designs[i];
+    html += '<div class="design-item">' +
+      '<img class="preview-img" src="' + (d.thumbnail || '') + '" alt="' + d.name + '" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23f0ecf5%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2230%22 fill=%22%23B8A9C9%22%3E💎%3C/text%3E%3C/svg%3E\'">' +
+      '<div class="name-row">' +
+        '<h3>' + escapeHtml(d.name) + '</h3>' +
+        '<button class="rename-btn-sm" onclick="renameDesign(' + i + ')" title="重命名"><i class="fas fa-pen"></i></button>' +
+      '</div>' +
+      '<p class="date"><i class="far fa-calendar-alt"></i> ' + new Date(d.createdAt).toLocaleDateString('zh-CN') + '</p>' +
+      '<div class="actions">' +
+        '<button class="btn btn-outline btn-sm" onclick="loadDesign(' + i + ')"><i class="fas fa-edit"></i> 加载</button>' +
+        '<button class="btn btn-sm btn-rename" onclick="renameDesign(' + i + ')"><i class="fas fa-pen"></i> 重命名</button>' +
+        '<button class="btn btn-sm btn-danger" onclick="deleteDesign(' + i + ')"><i class="fas fa-trash"></i> 删除</button>' +
+      '</div>' +
+    '</div>';
+  }
+  container.innerHTML = html;
+}
+
+// ============================================================
+//  防XSS转义
+// ============================================================
+function escapeHtml(text) {
+  var div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// ============================================================
+//  重命名设计
+// ============================================================
+function renameDesign(index) {
+  var designs = JSON.parse(localStorage.getItem('crystalDesigns') || '[]');
+  if (!designs[index]) return;
+
+  var currentName = designs[index].name || '未命名';
+  var newName = prompt('请输入新的设计名称：', currentName);
+
+  // 用户取消或输入为空
+  if (newName === null) return;
+  if (newName.trim() === '') {
+    alert('名称不能为空！');
+    return;
+  }
+
+  designs[index].name = newName.trim();
+  localStorage.setItem('crystalDesigns', JSON.stringify(designs));
+  loadDesigns(); // 刷新列表
+}
+
+// ============================================================
+//  加载设计 - 存入临时变量跳转到设计器
+// ============================================================
+function loadDesign(index) {
+  var designs = JSON.parse(localStorage.getItem('crystalDesigns') || '[]');
+  if (designs[index]) {
+    // 把设计数据存入临时变量，跳转到设计器
+    localStorage.setItem('tempLoadDesign', JSON.stringify(designs[index]));
+    window.location.href = 'designer.html?load=true';
+  }
+}
+
+// ============================================================
+//  删除设计
+// ============================================================
+function deleteDesign(index) {
+  if (confirm('确定要删除这个设计吗？')) {
+    var designs = JSON.parse(localStorage.getItem('crystalDesigns') || '[]');
+    designs.splice(index, 1);
+    localStorage.setItem('crystalDesigns', JSON.stringify(designs));
+    loadDesigns();
+  }
+}
+
+// ============================================================
+//  初始化
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  loadDesigns();
+});
+</script>
+</body>
+</html>
